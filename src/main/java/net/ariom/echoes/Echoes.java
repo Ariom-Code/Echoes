@@ -1,7 +1,11 @@
 package net.ariom.echoes;
 
 import com.mojang.logging.LogUtils;
+import net.ariom.echoes.item.ModCreativeTab;
+import net.ariom.echoes.item.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.CreativeModeTabRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -27,6 +31,14 @@ public class Echoes
     {
         IEventBus modEventBus = context.getModEventBus();
 
+
+        ModCreativeTab.register(modEventBus);
+
+        ModItems.register(modEventBus);
+
+
+
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -46,9 +58,11 @@ public class Echoes
     }
 
     // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
-
+    private void addCreative(BuildCreativeModeTabContentsEvent event) { //add to vanilla tab
+        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS){
+            event.accept(ModItems.PAGE);
+            event.accept(ModItems.AETHER_EYE);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
